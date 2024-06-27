@@ -62,9 +62,18 @@
         l = left;
     };
 
-    function onSubmit() {
+    async function onSubmit() {
         const imageData = context.getImageData(0, 0, width, height).data
-        console.log(imageData)
+        await fetch("http://127.0.0.1:5000/inference", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify({
+                imData: imageData.toString()
+            })
+        })
+        console.log(imageData.toString())
     }
 
     function clearCanvas() {
