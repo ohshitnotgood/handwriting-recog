@@ -13,6 +13,8 @@
 
     let t: number, l: number;
 
+    let output: string
+
     onMount(() => {
         context = canvas.getContext("2d")!;
         context.fillStyle = "#fff";
@@ -44,7 +46,7 @@
         const { x, y } = start;
         context.beginPath();
 
-        context.lineWidth = 30
+        context.lineWidth = 40
         context.lineCap = "round"
 
         context.moveTo(x, y);
@@ -64,7 +66,7 @@
 
     async function onSubmit() {
         const imageData = context.getImageData(0, 0, width, height).data
-        await fetch("http://127.0.0.1:5000/inference", {
+        let result = await fetch("http://127.0.0.1:5000/inference", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -73,11 +75,14 @@
                 imData: imageData.toString()
             })
         })
-        console.log(imageData.toString())
+
+        output = await result.text()
     }
 
     function clearCanvas() {
         context.clearRect(0, 0, width, height);
+        context.fillStyle = "#fff";
+        context.fillRect(0, 0, width, height);
     }
 </script>
 
@@ -113,6 +118,12 @@
     <div class="flex space-x-1 mx-auto">
         <button class="button-13" on:click={onSubmit}> Detect </button>
         <button class="button-13" on:click={clearCanvas}> Clear </button>
+    </div>
+
+    <div class="pt-5">
+        {#if output }
+            Detected digit: {output}
+        {/if}
     </div>
 </div>
 
