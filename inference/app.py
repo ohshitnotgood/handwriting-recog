@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_cors import CORS
 import numpy as np
 from PIL import Image
+from inference import inference
 
 app = Flask(__name__)
 CORS(app=app)
@@ -18,4 +19,7 @@ def endpoint():
     data = data.convert("L")
     data = data.resize((28, 28))
     data.save("./out/savefile.png")
-    return "ok"
+    
+    output = inference()
+    print(f"Returning {output} as the answer")
+    return output

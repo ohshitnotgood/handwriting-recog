@@ -1,0 +1,7 @@
+torch
+torchvision
+deeplake
+Flask
+flask-cors
+numpy
+pillow
