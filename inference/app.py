@@ -10,6 +10,15 @@ CORS(app=app)
 
 @app.post("/inference")
 def endpoint():
+    """
+    Endpoint to run inference
+    
+    Frontend is expected to send the image as an array which is converted to an image and run inference on.
+    
+    When the frontend sends data, the image is first written to disk before inference can be run on it.
+    
+    Result is returned to frontend.
+    """
     json = request.json
     imageData = json["imData"]
     imageData = imageData.split(",")
